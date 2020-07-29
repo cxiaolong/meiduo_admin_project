@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'carts.apps.CartsConfig',
     'orders.apps.OrdersConfig',
     'payment.apps.PaymentConfig',
+    'meiduo_admin.apps.MeiduoAdminConfig',
 ]
 
 MIDDLEWARE = [
@@ -94,10 +95,10 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': { # 写入
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '192.168.19.131',
+        'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': 'mysql',
+        'PASSWORD': 'x1430371727',
         'NAME': 'meiduo_db',
     },
     # 'slave': { # 读取
@@ -154,40 +155,41 @@ STATIC_URL = '/static/'
 CACHES = {
     "default": { # 默认存储信息: 存到 0 号库
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.19.131:6379/0",
+        "LOCATION": "redis://127.0.0.1:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": { # session 信息: 存到 1 号库
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.19.131:6379/1",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "verify_code": {  # 验证码 信息: 存到 2 号库
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.19.131:6379/2",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "history": {  # 历史浏览记录 信息: 存到 4 号库
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.19.131:6379/4",
+        "LOCATION": "redis://127.0.0.1:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "carts": {  # 购物车 信息: 存到 5 号库
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.19.131:6379/5",
+        "LOCATION": "redis://127.0.0.1:6379/5",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
 }
+
 # 设置将session信息存储到缓存中，上面已经将缓存改为了redis，所有session会存放到redis中
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 # 指定session存储到缓存空间的名称
@@ -323,6 +325,10 @@ ALIPAY_URL = "https://openapi.alipaydev.com/gateway.do" # 网关地址
 ALIPAY_DEBUG = True # 是否使用沙箱环境
 ALIPAY_RETURN_URL = "http://www.meiduo.site:8080/pay_success.html"
 
+REST_FRAMEWORK = {
+    # 指定DRF框架的异常处理函数
+    'EXCEPTION_HANDLER': 'meiduo_admin.utils.exceptions.exception_handler',
+}
 
 
 
