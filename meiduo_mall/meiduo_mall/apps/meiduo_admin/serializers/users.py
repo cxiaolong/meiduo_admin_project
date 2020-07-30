@@ -37,12 +37,13 @@ class AdminAuthSerializer(serializers.ModelSerializer):
             if not user.check_password(password):
                 raise serializers.ValidationError('用户名或密码错误')
 
+        attrs['user'] = user
+
         return attrs
 
     def create(self, validated_data):
         """生成jwt token """
-        username = validated_data.get('username')
-        user = User.objects.get(username=username)
+        user = validated_data.get('user')
 
         # 组织payload数据的方法
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
