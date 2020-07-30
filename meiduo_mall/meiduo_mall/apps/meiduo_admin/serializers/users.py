@@ -1,6 +1,6 @@
-from rest_framework import serializers
-
 from users.models import User
+from rest_framework import serializers
+from rest_framework_jwt.settings import api_settings
 
 
 class AdminAuthSerializer(serializers.ModelSerializer):
@@ -38,6 +38,26 @@ class AdminAuthSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError('用户名或密码错误')
 
         return attrs
+
+    def create(self, validated_data):
+        """生成jwt token """
+        username = validated_data.get('username')
+        user = User.objects.get(username=username)
+
+        # 组织payload数据的方法
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        # 生成jwt token数据的方法
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+        # 组织payload数据
+        payload = jwt_payload_handler(user)
+        # 生成jwt token
+        token = jwt_encode_handler(payload)
+
+        # 临时给user对象增加一个token属性
+        user.token = token
+
+        return user
 
 
 
