@@ -5,6 +5,7 @@ from users.models import User
 
 class AdminAuthSerializer(serializers.ModelSerializer):
     """管理员登录序列化器类"""
+    username = serializers.CharField(label='用户名')
     token = serializers.CharField(label='JWT token', read_only=True)
 
     class Meta:
