@@ -1,4 +1,5 @@
 from users.models import User
+from django.utils import timezone
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 
@@ -38,6 +39,8 @@ class AdminAuthSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError('用户名或密码错误')
 
         attrs['user'] = user
+        user.last_login = timezone.now()
+        user.save()
 
         return attrs
 
