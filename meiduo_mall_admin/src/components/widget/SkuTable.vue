@@ -69,6 +69,16 @@
           <el-form-item label="库存:" prop="stock">
             <el-input type="text" v-model="skuForm.stock" autocomplete="off" size="small"></el-input>
           </el-form-item>
+          <el-form-item label="分类:" prop="category_id">
+            <el-select v-model="skuForm.category_id" size="small">
+              <el-option
+                v-for="item in category_list"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="上下架:" prop="is_launched">
             <el-radio v-model="skuForm.is_launched" :label="true">是</el-radio>
             <el-radio v-model="skuForm.is_launched" :label="false">否</el-radio>
@@ -98,7 +108,7 @@
             <el-button @click="pop_show=false">取消</el-button>
           </el-form-item>
         </el-form>
-      </el-dialog>
+      </el-dialog>		
 </div>
 </template>
 
@@ -108,7 +118,7 @@ let token = localStorage.token;
 export default {
   name: 'SkuTable',
   props:['skus'],
-  data () {
+  data () {       
     return {
       pop_show:false,
       edit_id:'',
@@ -116,6 +126,7 @@ export default {
         "name": '',
         "spu_id":'',
         "caption": '',
+        "category_id": '',
         "price": '',
         "cost_price":'',
         "market_price":'',
@@ -129,6 +140,19 @@ export default {
     }
   },
   methods:{
+  	fnGetCategory(){
+      this.axios.get(cons.apis + '/skus/categories/', {
+        headers: {
+          'Authorization': 'JWT ' + token
+        },
+        responseType: 'json',
+      })
+      .then(dat=>{
+          this.category_list = dat.data;        
+      }).catch(err=>{      
+         console.log(err.response);
+      });
+    },
     fnGetGoods(){
       this.axios.get(cons.apis + '/goods/simple/', {
         headers: {
@@ -137,8 +161,8 @@ export default {
         responseType: 'json',
       })
       .then(dat=>{
-          this.goods_list = dat.data;
-      }).catch(err=>{
+          this.goods_list = dat.data;        
+      }).catch(err=>{      
          console.log(err.response);
       });
     },
@@ -150,8 +174,8 @@ export default {
         responseType: 'json',
       })
       .then(dat=>{
-          this.specs_list = dat.data;
-      }).catch(err=>{
+          this.specs_list = dat.data;       
+      }).catch(err=>{      
          console.log(err.response);
       });
     },
@@ -172,39 +196,41 @@ export default {
 	        responseType: 'json',
 	      })
 	      .then(dat=>{
-	      	this.edit_id = dat.data.id;
+	      	this.edit_id = dat.data.id;	      	
 	        this.skuForm.name = dat.data.name;
 		    this.skuForm.spu_id = dat.data.spu_id;
 		    this.skuForm.caption = dat.data.caption;
+		    this.skuForm.category_id = dat.data.category_id;
 		    this.skuForm.price = dat.data.price;
 		    this.skuForm.cost_price = dat.data.cost_price;
 		    this.skuForm.market_price = dat.data.market_price;
 		    this.skuForm.stock = dat.data.stock;
-		    this.skuForm.is_launched = dat.data.is_launched;
+		    this.skuForm.is_launched = dat.data.is_launched;		    
 
 		    var specs_data_list = {};
 		    for(var i=0;i<dat.data.specs.length;i++){
-		    	specs_data_list[dat.data.specs[i].spec_id] = dat.data.specs[i].option_id;
+		    	specs_data_list[dat.data.specs[i].spec_id] = dat.data.specs[i].option_id;  	
 		    }
 		    this.skuForm.specs =specs_data_list;
 		    this.pop_show = true;
 
-	      }).catch(err=>{
+	      }).catch(err=>{      
 	         console.log(err.response);
 	      });
-      }).catch(err=>{
+      }).catch(err=>{      
          console.log(err.response);
-      });
+      });    
   	},
   	submitForm(){
        var specs_sub_list = [];
        for(var k in this.skuForm.specs){
           specs_sub_list.push({'spec_id':k,'option_id':this.skuForm.specs[k]})
-       }
+       }       
        this.axios.put(cons.apis + '/skus/'+this.edit_id+'/',{
               "name":this.skuForm.name,
               "spu_id":this.skuForm.spu_id,
               "caption":this.skuForm.caption,
+              "category_id": this.skuForm.category_id,
               "price": this.skuForm.price,
               "cost_price": this.skuForm.cost_price,
               "market_price": this.skuForm.market_price,
@@ -215,7 +241,7 @@ export default {
             headers: {
               'Authorization': 'JWT ' + token
             },
-            responseType: 'json'
+            responseType: 'json'           
         })
         .then(dat=>{
             console.log(dat);
@@ -224,15 +250,15 @@ export default {
                 message: '商品修改成功!'
               });
               this.pop_show = false;
-              this.$emit('fnResetTable');
+              this.$emit('fnResetTable');                        
         }).catch(err=>{
            if(err.response.status==400){
                this.$message({
                   type:'info',
-                  message:err.response.data
+                  message:err.response.data.name[0]
               });
-           }
-        });
+           }          
+        }); 
     },
     fnDelSku(id){
         this.edit_id = id;
@@ -245,7 +271,7 @@ export default {
               headers: {
                 'Authorization': 'JWT ' + token
               },
-              responseType:'json'
+              responseType:'json'           
           }).then(dat=>{
             this.$message({
               type: 'success',
@@ -264,10 +290,10 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });
-        });
+          });          
+        });     
     }
-  },
+  },  
   computed:{
      look_good_id(){
        return this.skuForm.spu_id
@@ -279,6 +305,7 @@ export default {
     }
   },
   mounted(){
+    this.fnGetCategory();
     this.fnGetGoods();
   },
 }

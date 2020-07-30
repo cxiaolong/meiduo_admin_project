@@ -1,11 +1,11 @@
 <template>
   <div class="user_wrap">
-    <BreadCrumb crumb="订单管理>订单详情"></BreadCrumb>
+    <BreadCrumb crumb="订单管理>订单详情"></BreadCrumb>  
     <div class="center_wrap">
       <div class="order_detail_title_con">
         <h1 class="order_detail_title">订单详情</h1>
         <router-link to="/home/order" class="order_back">返回</router-link>
-      </div>
+      </div>      
       <el-row class="order_line">
         <el-col :span="8">订单号：{{ oOrder.order_id }}</el-col>
         <el-col :span="8">时间：{{ oOrder.create_time }}</el-col>
@@ -19,7 +19,7 @@
       <el-row class="order_line">
         <el-col :span="8">付款方式：{{ oOrder.pay_method | paystyle }}</el-col>
         <el-col :span="8">状态：{{ oOrder.status | process }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<el-button size="mini" round @click="pop_show=true">修改状态</el-button></el-col>
-      </el-row>
+      </el-row>      
       <el-table :data="oOrder.skus"  border style="margin:20px auto 0px;" size="medium">
         <el-table-column label="商品图片" width="150">
            <template slot-scope="scope">
@@ -29,11 +29,11 @@
         <el-table-column prop="sku.name" label="商品名称"></el-table-column>
         <el-table-column prop="price" label="商品价格"></el-table-column>
         <el-table-column prop="count" label="商品数量"></el-table-column>
-      </el-table>
+      </el-table>             
     </div>
-
+    
     <el-dialog title="修改状态" :visible.sync="pop_show" append-to-body>
-        <el-form :model="statusForm" status-icon ref="statusForm" label-width="100px">
+        <el-form :model="statusForm" status-icon ref="statusForm" label-width="100px">         
           <el-form-item label="订单状态：" prop="status">
             <el-select v-model="statusForm.status" size="small">
               <el-option
@@ -62,7 +62,7 @@ export default {
   data () {
     return {
       edit_id:'',
-      oOrder:{},
+      oOrder:{},      
       pop_show:false,
       statusForm:{
         status:''
@@ -104,14 +104,14 @@ export default {
             headers: {
               'Authorization': 'JWT ' + token
             },
-            responseType: 'json'
+            responseType: 'json'           
         }).then(dat=>{
           this.$message({
             type: 'success',
             message: '修改状态成功!'
-          });
+          }); 
           this.pop_show = false;
-          this.fnGetThisDetail();
+          this.fnGetThisDetail();       
         }).catch(err=>{
           console.log(err.response);
         })

@@ -1,8 +1,8 @@
 <template>
   <div class="group_wrap">
-    <BreadCrumb crumb="管理员管理"></BreadCrumb>
+    <BreadCrumb crumb="管理员管理"></BreadCrumb>  
     <div class="top_bar">
-       <AddAdmin @fnResetTable="fnGetData"></AddAdmin>
+       <AddAdmin @fnResetTable="fnGetData"></AddAdmin>       
     </div>
     <AdminTable :admins="aAdminList" @fnResetTable="fnGetData"></AdminTable>
     <el-pagination
@@ -60,7 +60,7 @@ export default {
       }).catch(err=>{
          console.log(err);
       });
-    },
+    },   
     fnGetPage:function(dat){
       this.page = dat;
       this.fnGetData(this.page);

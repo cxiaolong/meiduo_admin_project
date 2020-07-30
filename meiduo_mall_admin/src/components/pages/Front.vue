@@ -21,17 +21,17 @@ export default {
     }
   },
   components:{
-    BreadCrumb, // 'BreadCrumb': BreadCrumb
+    BreadCrumb,
     CountPannel,
     CurveGraph,
     PieGraph,
     ColumnGraph
   },
   mounted(){
-
+   
   },
   methods:{
-
+   
   }
 }
 </script>

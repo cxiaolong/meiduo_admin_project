@@ -15,7 +15,7 @@
 	<div class="spannel scolor04">
 		<em>{{day_orders}}</em><span>人</span>
 		<b>下单用户</b>
-	</div>
+	</div>		
 </div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
         this.total_count = dat.data.count;
 
     }).catch(err=>{
-       console.log(err.response);
+       console.log(err.response);      
        if(err.response.status==401){
           this.$router.push({path:'/'});
        }

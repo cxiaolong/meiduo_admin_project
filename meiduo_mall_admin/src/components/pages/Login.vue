@@ -2,7 +2,7 @@
   <div class="main_wrap">
       <div class="login_logo">
         <img src="static/images/logo.png" alt="">
-      </div>
+      </div>  
       <form method="post" class="login_form">
         <h1 class="login_title">用户登录</h1>
         <input type="text" name="username" placeholder="用户名" class="input_txt" autocomplete="off" v-model="username"  @click="errshow=false">
@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       username:'',
-      password:'',
+      password:'',      
       errmsg: '',
       errshow: false
     }
@@ -32,25 +32,22 @@ export default {
           this.errshow = true;
           return;
        };
-
-       // cons.apis: http://www.meiduo.site:8000/meiduo_admin
-       // http://www.meiduo.site:8000/meiduo_admin/authorizations/
+       //http://www.meiduo.site:8000/meiduo_admin/authorizations/
        this.axios.post(cons.apis + '/authorizations/',
-        {
+       {
           username:this.username,
           password:this.password,
-
+          
         },
         {}
-
-
+      
+       
         )
         .then(response=>{
           // console.log(response);
           // 存储用户登录信息
-          // sessionStorage.clear();
+          sessionStorage.clear();
           localStorage.clear();
-          // 客户端保存jwt token的数据
           localStorage.token = response.data.token;
           localStorage.username = response.data.username;
           localStorage.user_id = response.data.id;
@@ -60,7 +57,7 @@ export default {
         .catch(error=>{
           this.errmsg = '用户名或密码错误';
           this.errshow = true;
-        });
+        }); 
     }
   }
 }
@@ -74,6 +71,7 @@ export default {
   left:0px;
   top:0px;
   background:linear-gradient(45deg,#facff1,#6db9db);
+  
 }
 .login_logo{
   background:rgba(47,64,80,0.6);
@@ -118,7 +116,7 @@ export default {
   border:1px solid #d0d0d0;
   border-radius:4px;
   outline:none;
-  text-indent:10px;
+  text-indent:10px; 
 }
 .forget_pass{
   display:block;
@@ -137,7 +135,7 @@ export default {
   border-radius:4px;
   background:rgba(247,60,45,0.6);
   color:#fff;
-  cursor:pointer;
+  cursor:pointer; 
 }
 .input_sub:hover{
   background:rgba(247,60,45,0.4);

@@ -51,7 +51,7 @@ export default {
     }; 
     var validatePassWord = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('密码默认为123456abc!'));
+          callback(new Error('密码不能为空!'));
         } else {
           var rePass = /^[\w!@#$%^&*]{8,20}$/;
           if(rePass.test(value))

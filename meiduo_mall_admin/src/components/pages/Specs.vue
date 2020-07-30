@@ -1,8 +1,8 @@
 <template>
   <div class="specs_wrap">
-    <BreadCrumb crumb="商品规格管理"></BreadCrumb>
+    <BreadCrumb crumb="商品规格管理"></BreadCrumb>  
     <div class="top_bar">
-       <AddSpecs @fnResetTable="fnGetData(1)"></AddSpecs>
+       <AddSpecs @fnResetTable="fnGetData(1)"></AddSpecs>       
     </div>
     <SpecsTable :specs="aSpecsList" @fnResetTable="fnGetData(1)"></SpecsTable>
     <el-pagination
@@ -61,7 +61,7 @@ export default {
       }).catch(err=>{
          console.log(err);
       });
-    },
+    },   
     fnGetPage:function(dat){
       this.page = dat;
       this.fnGetData(this.page);

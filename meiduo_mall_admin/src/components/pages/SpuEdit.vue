@@ -206,7 +206,7 @@ export default {
           responseType: 'json'
       })
       .then(dat=>{
-          this['category' + num + '_list'] = dat.data.subs;
+          this['category' + num + '_list'] = dat.data;
       }).catch(err=>{
          console.log(err);
       });

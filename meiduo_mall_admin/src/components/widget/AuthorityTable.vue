@@ -1,5 +1,5 @@
 <template>
-<div class="auther_table_wrap">
+<div class="auther_table_wrap"> 
   <el-table
       :data="authors"
       border
@@ -35,7 +35,7 @@
         <el-form :model="authorForm" status-icon :rules="rulesAuthorForm" ref="authorForm" label-width="100px">
           <el-form-item label="权限名称：" prop="name">
             <el-input type="text" v-model="authorForm.name" autocomplete="off" size="small" class="input_width"></el-input>
-          </el-form-item>
+          </el-form-item>          
           <el-form-item label="权限识别名：" prop="codename">
             <el-input type="text" v-model="authorForm.codename" autocomplete="off" size="small" class="input_width"></el-input>
           </el-form-item>
@@ -68,14 +68,14 @@ export default {
     var validateName = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('权限名不能为空'));
-        } else {
-          callback()
+        } else {         
+          callback()          
         }
-    };
+    }; 
     var validateType = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('识别名不能为空!'));
-        } else {
+        } else {          
           callback()
         }
     };
@@ -86,7 +86,7 @@ export default {
       authorForm:{
         name:'',
         codename:'',
-        content_type:''
+        content_type:1
       },
       rulesAuthorForm:{
         name: [
@@ -104,7 +104,7 @@ export default {
   		this.edit_id = id;
   		this.authorForm.name = name;
       this.authorForm.codename = codename;
-
+  		
       this.axios.get(cons.apis + '/permission/perms/'+this.edit_id+'/', {
             headers: {
               'Authorization': 'JWT ' + token
@@ -131,13 +131,13 @@ export default {
             headers: {
               'Authorization': 'JWT ' + token
             },
-            responseType: 'json'
+            responseType: 'json'           
         }).then(dat=>{
           this.$message({
             type: 'success',
             message: '修改权限成功!'
-          });
-        	this.pop_show = false;
+          }); 
+        	this.pop_show = false;           
           this.resetForm('authorForm');
           this.$emit('fnResetTable');
         }).catch(err=>{
@@ -155,7 +155,7 @@ export default {
               headers: {
                 'Authorization': 'JWT ' + token
               },
-              responseType:'json'
+              responseType:'json'           
           }).then(dat=>{
             this.$message({
               type: 'success',
@@ -174,8 +174,8 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });
-        });
+          });          
+        });  		
   	},
     fnGetTypeList(){
       this.axios.get(cons.apis + '/permission/content_types/', {
@@ -186,7 +186,7 @@ export default {
       })
       .then(dat=>{
           this.content_type_list = dat.data;
-      }).catch(err=>{
+      }).catch(err=>{      
          console.log(err.response);
       });
     },

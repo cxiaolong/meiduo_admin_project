@@ -11,7 +11,7 @@
       </el-table-column>   
       <el-table-column
         prop="sku"
-        label="SKU商品">
+        label="SKU商品id">
       </el-table-column>
       <el-table-column
         label="商品图片">
@@ -35,9 +35,9 @@
    </el-table>
 
     <el-dialog title="修改商品图片" :visible.sync="pop_show" append-to-body>
-        <el-form :model="PicturesForm" status-icon :rules="rulesPicturesForm" ref="PicturesForm" label-width="100px">
-          <el-form-item label="SKU商品：" prop="content_type">
-            <el-select v-model="PicturesForm.sku_id" size="small">
+        <el-form :model="PicturesForm" status-icon :rules="rulesPicturesForm" ref="BrandsForm" label-width="100px">
+          <el-form-item label="SKU商品id：" prop="content_type">
+            <el-select v-model="PicturesForm.sku" size="small">
               <el-option
                 v-for="item in sku_list"
                 :key="item.id"
@@ -53,7 +53,6 @@
           </el-form-item>
           <el-form-item label="商品图片" prop="logo">
             <el-upload 
-            ref="upload"
             action=""
             :auto-upload="false">
             <el-button size="small" type="primary">点击选择图片</el-button>
@@ -61,7 +60,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm">提交</el-button>
-            <el-button @click="fnCancel">取消</el-button>
+            <el-button @click="pop_show=false">取消</el-button>
           </el-form-item>
         </el-form>
     </el-dialog>
@@ -79,7 +78,7 @@ export default {
       pop_show:false,
       sku_list:[],
       PicturesForm:{
-        sku_id:'',
+        sku:'',
         image:'',
       },
       rulesPicturesForm:{
@@ -97,7 +96,7 @@ export default {
             responseType: 'json',
         })
         .then(dat=>{
-           this.PicturesForm.sku_id = dat.data.sku_id;
+           this.PicturesForm.sku = dat.data.sku;
            this.PicturesForm.image = dat.data.image;
         }).catch(err=>{
            console.log(err.response);
@@ -106,7 +105,7 @@ export default {
   	submitForm(){
       let fileValue = document.querySelector('.el-upload .el-upload__input');
       let fd = new FormData();
-      fd.append('sku_id', this.PicturesForm.sku_id);
+      fd.append('sku', this.PicturesForm.sku);
       fd.append('image', fileValue.files[0], fileValue.files[0].name);
 
   		this.axios.put(cons.apis + '/skus/images/'+this.edit_id+'/', fd, {
@@ -121,7 +120,7 @@ export default {
           }); 
         	this.pop_show = false;
           this.$emit('fnResetTable');           
-          this.resetForm();          
+          this.resetForm('ChannelsForm');          
         }).catch(err=>{
         	console.log(err.response);
         })
@@ -173,16 +172,8 @@ export default {
          console.log(err.response);
       });
     },
-    resetForm(){
-        this.PicturesForm.sku_id = '';
-        this.PicturesForm.image = '';
-        this.$refs.upload.clearFiles();
-    },
-    fnCancel() {
-        this.pop_show = false;
-        this.PicturesForm.sku_id = '';
-        this.PicturesForm.image = '';
-        this.$refs.upload.clearFiles();
+    resetForm(formName){
+      this.$refs[formName].resetFields();
     }
   },
   mounted(){

@@ -21,11 +21,22 @@
           <el-form-item label="库存:" prop="stock">
             <el-input type="text" v-model="skuForm.stock" autocomplete="off" size="small"></el-input>
           </el-form-item>
-          <el-form-item label="上下架:" prop="is_launched">
-            <el-radio v-model="skuForm.is_launched" label="true" size="medium">是</el-radio>
-            <el-radio v-model="skuForm.is_launched" label="false" size="medium">否</el-radio>
+          <el-form-item label="分类:" prop="category_id">
+            <el-select v-model="skuForm.category_id" size="small">
+              <el-option
+                v-for="item in category_list"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+                >
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="SPU:" prop="spu_id">
+          <el-form-item label="上下架:" prop="is_launched">
+            <el-radio v-model="skuForm.is_launched" label="true">是</el-radio>
+            <el-radio v-model="skuForm.is_launched" label="false">否</el-radio>
+          </el-form-item>
+          <el-form-item label="SPU" prop="spu_id">
             <el-select v-model="skuForm.spu_id" size="small" @change="skuForm.specs={}">
               <el-option
                 v-for="item in goods_list"
@@ -33,7 +44,7 @@
                 :label="item.name"
                 :value="item.id"
                 >
-              </el-option>
+              </el-option>              
             </el-select>
           </el-form-item>
           <el-form-item v-for="item in specs_list" :label="item.name" :key="item.id">
@@ -46,14 +57,14 @@
                 >
               </el-option>
             </el-select>
-          </el-form-item><br/>
+          </el-form-item><br>
           <el-form-item>
             <el-button type="primary" @click="submitForm">提交</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
-	</div>
+	</div>  
 </template>
 
 <script>
@@ -61,13 +72,14 @@ import cons from '@/components/constant';
 let token = localStorage.token;
 export default {
   name: 'AddUser',
-  data () {
+  data () {       
     return {
       pop_show:false,
       skuForm:{
         "name": '',
         "spu_id":'',
         "caption": '',
+        "category_id": '',
         "price": '',
         "cost_price":'',
         "market_price":'',
@@ -75,11 +87,25 @@ export default {
         "is_launched":'',
         "specs":{}
       },
+      category_list:[],
       goods_list:[],
       specs_list:[],
     }
   },
-  methods:{
+  methods:{  
+    fnGetCategory(){
+      this.axios.get(cons.apis + '/skus/categories/', {
+        headers: {
+          'Authorization': 'JWT ' + token
+        },
+        responseType: 'json',
+      })
+      .then(dat=>{
+          this.category_list = dat.data;        
+      }).catch(err=>{      
+         console.log(err.response);
+      });
+    },
     fnGetGoods(){
       this.axios.get(cons.apis + '/goods/simple/', {
         headers: {
@@ -88,8 +114,8 @@ export default {
         responseType: 'json',
       })
       .then(dat=>{
-          this.goods_list = dat.data;
-      }).catch(err=>{
+          this.goods_list = dat.data;        
+      }).catch(err=>{      
          console.log(err.response);
       });
     },
@@ -101,8 +127,8 @@ export default {
         responseType: 'json',
       })
       .then(dat=>{
-          this.specs_list = dat.data;
-      }).catch(err=>{
+          this.specs_list = dat.data;       
+      }).catch(err=>{      
          console.log(err.response);
       });
     },
@@ -115,6 +141,7 @@ export default {
               "name":this.skuForm.name,
               "spu_id":this.skuForm.spu_id,
               "caption":this.skuForm.caption,
+              "category_id": this.skuForm.category_id,
               "price": this.skuForm.price,
               "cost_price": this.skuForm.cost_price,
               "market_price": this.skuForm.market_price,
@@ -125,7 +152,7 @@ export default {
             headers: {
               'Authorization': 'JWT ' + token
             },
-            responseType: 'json'
+            responseType: 'json'           
         })
         .then(dat=>{
             if(dat.status==201){
@@ -137,27 +164,29 @@ export default {
               this.skuForm.name = '';
               this.skuForm.spu_id = '';
               this.skuForm.caption = '';
+              this.skuForm.category_id = '';
               this.skuForm.price = '';
               this.skuForm.cost_price = '';
               this.skuForm.market_price = '';
               this.skuForm.stock = '';
               this.skuForm.is_launched = '';
               this.skuForm.specs ={};
-              this.$emit('fnResetTable');
+              this.$emit('fnResetTable');                        
             }
         }).catch(err=>{
            if(err.response.status==400){
                this.$message({
                   type:'info',
-                  message:err.response.data
+                  message:err.response.data.name[0]
               });
-           }
-        });
+           }          
+        }); 
     },
     resetForm(){
       this.skuForm.name = '';
       this.skuForm.spu_id = '';
       this.skuForm.caption = '';
+      this.skuForm.category_id = '';
       this.skuForm.price = '';
       this.skuForm.cost_price = '';
       this.skuForm.market_price = '';
@@ -165,20 +194,18 @@ export default {
       this.skuForm.is_launched = '';
       this.skuForm.specs ={};
     }
-  },
+  },  
   computed:{
      look_good_id(){
        return this.skuForm.spu_id
      }
   },
   mounted(){
+    this.fnGetCategory();
     this.fnGetGoods();
   },
   watch:{
     look_good_id(newVal,oldVal){
-       if (newVal == '') {
-          return;
-       }
        this.fnGetSpecs();
     }
   }

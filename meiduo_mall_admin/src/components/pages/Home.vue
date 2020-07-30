@@ -12,7 +12,7 @@
      <Menu></Menu>
   </div>
   <div class="main_body">
-    <router-view/>
+     <router-view/>
   </div>
 </div>
 </template>
@@ -30,7 +30,7 @@ export default {
     Menu
   },
   mounted(){
-    let user = localStorage.username;
+    let user = localStorage.username;    
     if(user==undefined)
     {
        this.$router.push({path:'/'});

@@ -2,9 +2,9 @@
 	<div class="add_channels_wrap">
     <el-button type="primary" size="small" @click="pop_show = true" class="pull-right">新增商品图片</el-button>    
     <el-dialog title="新增商品图片" :visible.sync="pop_show" append-to-body>
-        <el-form :model="PicturesForm" status-icon :rules="rulesPicsForm" ref="PicturesForm" label-width="100px">
-          <el-form-item label="SKU商品：" prop="content_type">
-            <el-select v-model="PicturesForm.sku_id" size="small">
+        <el-form :model="PicturesForm" status-icon :rules="rulesBrandsForm" ref="BrandsForm" label-width="100px">
+          <el-form-item label="SKU商品id：" prop="content_type">
+            <el-select v-model="PicturesForm.sku" size="small">
               <el-option
                 v-for="item in sku_list"
                 :key="item.id"
@@ -15,7 +15,6 @@
           </el-form-item>
           <el-form-item label="商品图片" prop="logo">
             <el-upload 
-            ref="upload"
             action=""
             :auto-upload="false">
             <el-button size="small" type="primary">点击选择图片</el-button>
@@ -23,7 +22,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm">提交</el-button>
-            <el-button @click="resetForm">重置</el-button>
+            <el-button @click="resetForm('ChannelsForm')">重置</el-button>
           </el-form-item>
         </el-form>
     </el-dialog>
@@ -40,10 +39,10 @@ export default {
       pop_show:false,
       sku_list:[],
       PicturesForm:{
-        sku_id:'',
-        image:''
+        sku:'',
+        image:'',
       },
-      rulesPicsForm:{
+      rulesBrandsForm:{
       }
     }
   },
@@ -51,7 +50,7 @@ export default {
     submitForm(){
         let fileValue = document.querySelector('.el-upload .el-upload__input');
         let fd = new FormData();
-        fd.append('sku_id', this.PicturesForm.sku_id);
+        fd.append('sku', this.PicturesForm.sku);
         fd.append('image', fileValue.files[0], fileValue.files[0].name);
 
         this.axios.post(cons.apis + '/skus/images/', fd, {
@@ -66,11 +65,11 @@ export default {
             if(dat.status==201){
               this.$message({
                 type: 'success',
-                message: '商品图片添加成功!'
+                message: '品牌添加成功!'
               }); 
               this.pop_show = false;
               this.$emit('fnResetTable');            
-              this.resetForm();                                     
+              this.resetForm('ChannelsForm');                                     
             }
         }).catch(err=>{
             console.log(err.response);
@@ -90,10 +89,8 @@ export default {
          console.log(err.response);
       });
     },
-    resetForm(){
-      this.PicturesForm.sku_id='';
-      this.PicturesForm.image='';
-      this.$refs.upload.clearFiles();
+    resetForm(formName){
+      this.$refs[formName].resetFields();
     }
   },
   mounted(){

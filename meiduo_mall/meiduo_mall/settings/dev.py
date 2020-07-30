@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import sys
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # 内层`meiduo_mall`目录
@@ -328,8 +329,18 @@ ALIPAY_RETURN_URL = "http://www.meiduo.site:8080/pay_success.html"
 REST_FRAMEWORK = {
     # 指定DRF框架的异常处理函数
     'EXCEPTION_HANDLER': 'meiduo_admin.utils.exceptions.exception_handler',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 引入JWT认证机制，当客户端将jwt token传递给服务器之后
+        # 此认证机制会自动校验jwt token的有效性，无效会直接返回401(未认证错误)
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
 }
 
+# JWT扩展配置
+JWT_AUTH = {
+    # 设置生成jwt token的有效时间
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+}
 
 
 
