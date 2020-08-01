@@ -4,8 +4,10 @@ from meiduo_admin.views import statistical
 
 urlpatterns = [
     # 进行url配置
-    path(r'authorizations/', users.AdminAuthView.as_view()),
+    path('authorizations/', users.AdminAuthView.as_view()),
     path('statistical/day_active/', statistical.UserDayActiveView.as_view()),
+    path('statistical/day_orders/', statistical.UserDayOrdersView.as_view()),
+    path('statistical/month_increment/', statistical.UserMonthCountView.as_view()),
 ]
 
 

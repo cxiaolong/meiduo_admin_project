@@ -5,8 +5,6 @@ from meiduo_admin.serializers.users import AdminAuthSerializer
 
 
 # POST /meiduo_admin/authorizations/
-# 通过请求头传递jwt token, 给jwt扩展包使用
-# 格式: Authorization: jwt <jwt token>
 class AdminAuthView(APIView):
     def post(self, request):
         """
