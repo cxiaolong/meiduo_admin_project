@@ -27,6 +27,23 @@ class SKUImageViewSet(ModelViewSet):
     #     serializer.save() # 调用序列化器类中的create
     #     return Response(serializer.data, status=201)
 
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)
+
+    # def update(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save() # 调用序列化器类中的update
+    #     return Response(serializer.data)
+
+    # def destroy(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     instance.delete() # 思考：FDFS中的图片会不会被删除？不会
+    #     return Response(status=204)
+
 
 # GET /meiduo_admin/skus/simple/
 class SKUSimpleView(ListAPIView):

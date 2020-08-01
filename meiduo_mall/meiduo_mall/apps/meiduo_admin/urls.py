@@ -1,4 +1,5 @@
 from django.urls import path
+from django.urls import re_path
 from meiduo_admin.views import skus
 from meiduo_admin.views import users
 from meiduo_admin.views import statistical
@@ -15,36 +16,10 @@ urlpatterns = [
         'get': 'list',
         'post': 'create',
     })),
+    re_path(r'^skus/images/(?P<pk>\d+)/$', skus.SKUImageViewSet.as_view({
+        'get': 'retrieve',
+        'put': 'update',
+        'delete': 'destroy'
+    })),
     path('skus/simple/', skus.SKUSimpleView.as_view()),
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
