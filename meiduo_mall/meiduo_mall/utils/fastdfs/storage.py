@@ -1,8 +1,10 @@
-from django.core.files.storage import Storage
-# 先导入我们安装的 fdfs_client.client 客户端
-from fdfs_client.client import Fdfs_client
 # 导入 settings 文件
 from django.conf import settings
+# 先导入我们安装的 fdfs_client.client 客户端
+from fdfs_client.client import Fdfs_client
+from django.core.files.storage import Storage
+from rest_framework.exceptions import APIException
+
 
 class FastDFSStorage(Storage):
 
@@ -14,9 +16,11 @@ class FastDFSStorage(Storage):
         # 我们返回 False: 永不冲突
         return False
 
-    def save(self, name, content, max_length=None):
-        '''重写上传文件的函数'''
-
+    def _save(self, name, content):
+        """
+        :param name:  上传文件的名称
+        :param content:  文件对象
+        """
         # 我们需要将文件上传到 FastDFS 上面.
         # 创建客户端对象:
         client = Fdfs_client(settings.FDFS_CLIENT_CONF)
@@ -27,14 +31,13 @@ class FastDFSStorage(Storage):
 
         # 判断是否上传成功:
         if result.get('Status') != 'Upload successed.':
-            raise Exception('上传文件到FDFS系统失败')
+            raise APIException('上传文件到FDFS系统失败')
 
         # 上传成功: 返回 file_id:
         file_id = result.get('Remote file_id')
 
         # 这个位置返回以后, django 自动会给我们保存到表字段里.
         return file_id
-
 
     # 返回可访问到文件的完整的url地址
     # 我们知道, 保存成功后, 返回的图片是不完整的, 所以在这里拼接完整.

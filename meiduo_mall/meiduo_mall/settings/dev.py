@@ -274,7 +274,7 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'smartli_it@163.com'
 # 在邮箱中设置的客户端授权密码
 EMAIL_HOST_PASSWORD = 'smart123'
-# 收件人看到的发件人
+# 收件人看到的发件
 EMAIL_FROM = '美多商城<smartli_it@163.com>'
 
 
