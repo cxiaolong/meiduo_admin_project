@@ -64,6 +64,12 @@ class AdminAuthSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserInfoSerializer(serializers.ModelSerializer):
+    """用户序列化器类"""
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'mobile', 'email')
+
 
 
 

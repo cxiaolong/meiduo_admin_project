@@ -334,6 +334,8 @@ REST_FRAMEWORK = {
         # 此认证机制会自动校验jwt token的有效性，无效会直接返回401(未认证错误)
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
+    # 设置DRF框架所使用的全局分页类
+    'DEFAULT_PAGINATION_CLASS': 'meiduo_admin.utils.pagination.StandardResultPagination',
 }
 
 # JWT扩展配置

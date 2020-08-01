@@ -8,6 +8,7 @@ urlpatterns = [
     path('statistical/day_active/', statistical.UserDayActiveView.as_view()),
     path('statistical/day_orders/', statistical.UserDayOrdersView.as_view()),
     path('statistical/month_increment/', statistical.UserMonthCountView.as_view()),
+    path('users/', users.UserInfoView.as_view()),
 ]
 
 

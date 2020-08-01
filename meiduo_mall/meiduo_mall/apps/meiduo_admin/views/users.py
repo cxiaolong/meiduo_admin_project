@@ -1,6 +1,10 @@
+from users.models import User
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAdminUser
+from meiduo_admin.serializers.users import UserInfoSerializer
 from meiduo_admin.serializers.users import AdminAuthSerializer
 
 
@@ -22,6 +26,25 @@ class AdminAuthView(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+# GET /meiduo_admin/users/?keyword=<搜索关键字>
+class UserInfoView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = UserInfoSerializer
+
+    def get_queryset(self):
+        """返回视图所使用的查询集"""
+        keyword = self.request.query_params.get('keyword')
+
+        if keyword:
+            users = User.objects.filter(is_staff=False, username__contains=keyword)
+        else:
+            users = User.objects.filter(is_staff=False)
+
+        return users
+
+
 
 
 
