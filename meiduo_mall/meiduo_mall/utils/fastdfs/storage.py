@@ -1,3 +1,10 @@
+"""
+当客户端请求上传文件时,由服务器将文件传递到FDFS进行保存
+自定义文件存储:
+a. 继承父类Storage
+b. 实现_save和exists等必要的方法
+修改DEFAULT_FILE_STORAGE配置项
+"""
 # 导入 settings 文件
 from django.conf import settings
 # 先导入我们安装的 fdfs_client.client 客户端
