@@ -1,3 +1,4 @@
+from goods.models import SKU
 from goods.models import SKUImage
 from rest_framework import serializers
 
@@ -12,6 +13,11 @@ class SKUImageSerializer(serializers.ModelSerializer):
         fields = ('id', 'sku', 'sku_id', 'image')
 
 
+class SKUSimpleSerializer(serializers.ModelSerializer):
+    """SKU商品序列化器类"""
+    class Meta:
+        model = SKU
+        fields = ('id', 'name')
 
 
 

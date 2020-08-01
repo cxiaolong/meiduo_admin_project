@@ -14,6 +14,7 @@ urlpatterns = [
     path('skus/images/', skus.SKUImageViewSet.as_view({
         'get': 'list'
     })),
+    path('skus/simple/', skus.SKUSimpleView.as_view()),
 ]
 
 
