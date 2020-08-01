@@ -12,7 +12,8 @@ urlpatterns = [
     path('users/', users.UserInfoView.as_view()),
     # SKU图片管理
     path('skus/images/', skus.SKUImageViewSet.as_view({
-        'get': 'list'
+        'get': 'list',
+        'post': 'create',
     })),
     path('skus/simple/', skus.SKUSimpleView.as_view()),
 ]

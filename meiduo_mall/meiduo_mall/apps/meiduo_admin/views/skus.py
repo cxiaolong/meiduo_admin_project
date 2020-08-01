@@ -13,6 +13,20 @@ class SKUImageViewSet(ModelViewSet):
     queryset = SKUImage.objects.all()
     serializer_class = SKUImageSerializer
 
+    # GET /meiduo_admin/skus/images/ -> list
+    # POST /meiduo_admin/skus/images/ -> create
+
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.get_queryset()
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save() # 调用序列化器类中的create
+    #     return Response(serializer.data, status=201)
+
 
 # GET /meiduo_admin/skus/simple/
 class SKUSimpleView(ListAPIView):
