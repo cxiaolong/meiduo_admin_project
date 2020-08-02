@@ -10,8 +10,12 @@ from meiduo_admin.serializers.skus import SKUSimpleSerializer
 
 
 class SKUImageViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
+
     queryset = SKUImage.objects.all()
     serializer_class = SKUImageSerializer
+
+    lookup_value_regex = '\d+'
 
     # GET /meiduo_admin/skus/images/ -> list
     # POST /meiduo_admin/skus/images/ -> create
@@ -47,8 +51,8 @@ class SKUImageViewSet(ModelViewSet):
 
 # GET /meiduo_admin/skus/simple/
 class SKUSimpleView(ListAPIView):
-    queryset = SKU.objects.all()
     permission_classes = [IsAdminUser]
+    queryset = SKU.objects.all()
     # 关闭分页
     pagination_class = None
 

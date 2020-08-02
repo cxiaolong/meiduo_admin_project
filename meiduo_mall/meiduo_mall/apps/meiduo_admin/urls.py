@@ -23,3 +23,40 @@ urlpatterns = [
     })),
     path('skus/simple/', skus.SKUSimpleView.as_view()),
 ]
+
+# 路由Router: 图片管理
+from rest_framework.routers import SimpleRouter
+router = SimpleRouter()
+router.register('skus/images', skus.SKUImageViewSet, basename='images')
+urlpatterns += router.urls
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

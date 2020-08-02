@@ -1,5 +1,5 @@
 <template>
-<div class="auther_table_wrap"> 
+<div class="auther_table_wrap">
   <el-table
       :data="pictures"
       border
@@ -8,7 +8,7 @@
         prop="id"
         label="id"
         width="100">
-      </el-table-column>   
+      </el-table-column>
       <el-table-column
         prop="sku"
         label="SKU商品id">
@@ -52,7 +52,7 @@
             </template>
           </el-form-item>
           <el-form-item label="商品图片" prop="logo">
-            <el-upload 
+            <el-upload
             action=""
             :auto-upload="false">
             <el-button size="small" type="primary">点击选择图片</el-button>
@@ -73,12 +73,12 @@ let token = localStorage.token;
 export default {
   name: 'OptionsTable',
   props:['pictures'],
-   data () { 
+   data () {
     return {
       pop_show:false,
       sku_list:[],
       PicturesForm:{
-        sku:'',
+        sku_id:'',
         image:'',
       },
       rulesPicturesForm:{
@@ -105,22 +105,22 @@ export default {
   	submitForm(){
       let fileValue = document.querySelector('.el-upload .el-upload__input');
       let fd = new FormData();
-      fd.append('sku', this.PicturesForm.sku);
+      fd.append('sku_id', this.PicturesForm.sku_id);
       fd.append('image', fileValue.files[0], fileValue.files[0].name);
 
   		this.axios.put(cons.apis + '/skus/images/'+this.edit_id+'/', fd, {
             headers: {
               'Authorization': 'JWT ' + token
             },
-            responseType: 'json'           
+            responseType: 'json'
         }).then(dat=>{
           this.$message({
             type: 'success',
             message: '商品图片修改成功!'
-          }); 
+          });
         	this.pop_show = false;
-          this.$emit('fnResetTable');           
-          this.resetForm('ChannelsForm');          
+          this.$emit('fnResetTable');
+          this.resetForm('ChannelsForm');
         }).catch(err=>{
         	console.log(err.response);
         })
@@ -136,7 +136,7 @@ export default {
               headers: {
                 'Authorization': 'JWT ' + token
               },
-              responseType:'json'           
+              responseType:'json'
           }).then(dat=>{
             this.$message({
               type: 'success',
@@ -155,8 +155,8 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
-        });  		
+          });
+        });
   	},
     fnGetSkuList(){
       this.axios.get(cons.apis + '/skus/simple/', {
@@ -167,8 +167,8 @@ export default {
       })
       .then(dat=>{
           console.log(dat.data);
-          this.sku_list = dat.data;        
-      }).catch(err=>{      
+          this.sku_list = dat.data;
+      }).catch(err=>{
          console.log(err.response);
       });
     },

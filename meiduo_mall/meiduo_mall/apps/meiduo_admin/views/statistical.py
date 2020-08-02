@@ -40,6 +40,8 @@ class UserDayOrdersView(APIView):
         """
         # 1. 获取日下单用户数量
         now_date = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        # 关联过滤查询 由多模型类条件查询一模型类数据
+        # 关联模型类名小写__属性名__条件运算符=值
         count = User.objects.filter(orders__create_time__gte=now_date).distinct().count()
 
         # 2. 返回应答
