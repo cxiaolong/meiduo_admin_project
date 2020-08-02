@@ -102,6 +102,19 @@ class AdminViewSet(ModelViewSet):
     #     serializer = self.get_serializer(queryset, many=True)
     #     return Response(serializer.data)
 
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save() # 调用序列化器类中的create
+    #     return Response(serializer.data, status=201)
+
+    # def update(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save() # 调用序列化器类中的update
+    #     return Response(serializer.data)
+
     def simple(self, request):
         """
         获取用户组的简单数据：

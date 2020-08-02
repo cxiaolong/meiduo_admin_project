@@ -48,9 +48,14 @@ urlpatterns = [
     path('permission/simple/', permissions.GroupViewSet.as_view({
         'get': 'simple'
     })),
-    path('permissions/admins/', permissions.AdminViewSet.as_view({
-        'get': 'list'
-    })),
+    # path('permissions/admins/', permissions.AdminViewSet.as_view({
+    #     'get': 'list'
+    # })),
+    # re_path(r'^permission/admins/(?P<pk>\d+)/$', permissions.AdminViewSet.as_view({
+    #     'get': 'retrieve',
+    #     'put': 'update',
+    #     'delete': 'destroy'
+    # })),
     path('permission/groups/simple/', permissions.AdminViewSet.as_view({
         'get': 'simple'
     }))
@@ -64,6 +69,8 @@ router.register('skus/images', skus.SKUImageViewSet, basename='images')
 router.register('permission/perms', permissions.PermissionViewSet, basename='perms')
 # 路由Router：用户组管理
 router.register('permission/groups', permissions.GroupViewSet, basename='groups')
+# 路由Router：管理员管理
+router.register('permission/admins', permissions.AdminViewSet, basename='admins')
 urlpatterns += router.urls
 
 
