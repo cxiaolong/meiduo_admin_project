@@ -1,3 +1,4 @@
+from users.models import User
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth.models import Group
@@ -5,10 +6,12 @@ from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import Permission
 from rest_framework.permissions import IsAdminUser
 from django.contrib.auth.models import ContentType
+from meiduo_admin.serializers.permissions import AdminSerializer
 from meiduo_admin.serializers.permissions import GroupSerializer
 from meiduo_admin.serializers.permissions import PermissionSerializer
 from meiduo_admin.serializers.permissions import PermSimpleSerializer
 from meiduo_admin.serializers.permissions import ContentTypeSerializer
+from meiduo_admin.serializers.permissions import GroupSimpleSerializer
 
 
 class PermissionViewSet(ModelViewSet):
@@ -84,6 +87,32 @@ class GroupViewSet(ModelViewSet):
         """
         perms = Permission.objects.all()
         serializer = PermSimpleSerializer(perms, many=True)
+        return Response(serializer.data)
+
+
+class AdminViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
+
+    queryset = User.objects.filter(is_staff=True)
+    serializer_class = AdminSerializer
+    # GET /meiduo_admin/permission/admins/ -> list
+
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.get_queryset()
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    def simple(self, request):
+        """
+        获取用户组的简单数据：
+        ① 查询数据库获取所有用户组数据
+        ② 将用户组数据序列化并返回
+        """
+        # ① 查询数据库获取所有用户组数据
+        groups = Group.objects.all()
+
+        # ② 将用户组数据序列化并返回
+        serializer = GroupSimpleSerializer(groups, many=True)
         return Response(serializer.data)
 
 

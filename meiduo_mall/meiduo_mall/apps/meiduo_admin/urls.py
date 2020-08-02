@@ -48,6 +48,12 @@ urlpatterns = [
     path('permission/simple/', permissions.GroupViewSet.as_view({
         'get': 'simple'
     })),
+    path('permissions/admins/', permissions.AdminViewSet.as_view({
+        'get': 'list'
+    })),
+    path('permission/groups/simple/', permissions.AdminViewSet.as_view({
+        'get': 'simple'
+    }))
 ]
 
 # 路由Router: 图片管理
