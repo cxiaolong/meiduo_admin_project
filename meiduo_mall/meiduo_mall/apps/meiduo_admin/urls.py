@@ -3,6 +3,7 @@ from django.urls import re_path
 from meiduo_admin.views import skus
 from meiduo_admin.views import users
 from meiduo_admin.views import statistical
+from meiduo_admin.views import permissions
 
 urlpatterns = [
     # 进行url配置
@@ -22,12 +23,27 @@ urlpatterns = [
         'delete': 'destroy'
     })),
     path('skus/simple/', skus.SKUSimpleView.as_view()),
+    # 权限管理
+    # path('permission/perms/', permissions.PermissionViewSet.as_view({
+    #     'get': 'list',
+    #     'post': 'create'
+    # })),
+    # re_path(r'^permission/perms/(?P<pk>\d+)/$', permissions.PermissionViewSet.as_view({
+    #     'get': 'retrieve',
+    #     'put': 'update',
+    #     'delete': 'destroy'
+    # })),
+    path('permission/content_types/', permissions.PermissionViewSet.as_view({
+        'get': 'content_types'
+    })),
 ]
 
 # 路由Router: 图片管理
 from rest_framework.routers import SimpleRouter
 router = SimpleRouter()
 router.register('skus/images', skus.SKUImageViewSet, basename='images')
+# 路由Router：权限管理
+router.register('permission/perms', permissions.PermissionViewSet, basename='perms')
 urlpatterns += router.urls
 
 
