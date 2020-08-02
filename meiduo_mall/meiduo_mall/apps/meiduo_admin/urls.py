@@ -36,6 +36,18 @@ urlpatterns = [
     path('permission/content_types/', permissions.PermissionViewSet.as_view({
         'get': 'content_types'
     })),
+    # path('permission/groups/', permissions.GroupViewSet.as_view({
+    #     'get': 'list',
+    #     'post': 'create',
+    # })),
+    # re_path(r'^permission/groups/(?P<pk>\d+)/$', permissions.GroupViewSet.as_view({
+    #     'get': 'retrieve',
+    #     'put': 'update',
+    #     'delete': 'destroy'
+    # })),
+    path('permission/simple/', permissions.GroupViewSet.as_view({
+        'get': 'simple'
+    })),
 ]
 
 # 路由Router: 图片管理
@@ -44,6 +56,8 @@ router = SimpleRouter()
 router.register('skus/images', skus.SKUImageViewSet, basename='images')
 # 路由Router：权限管理
 router.register('permission/perms', permissions.PermissionViewSet, basename='perms')
+# 路由Router：用户组管理
+router.register('permission/groups', permissions.GroupViewSet, basename='groups')
 urlpatterns += router.urls
 
 

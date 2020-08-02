@@ -1,10 +1,13 @@
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.contrib.auth.models import Group
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import Permission
 from rest_framework.permissions import IsAdminUser
 from django.contrib.auth.models import ContentType
+from meiduo_admin.serializers.permissions import GroupSerializer
 from meiduo_admin.serializers.permissions import PermissionSerializer
+from meiduo_admin.serializers.permissions import PermSimpleSerializer
 from meiduo_admin.serializers.permissions import ContentTypeSerializer
 
 
@@ -49,6 +52,54 @@ class PermissionViewSet(ModelViewSet):
         # 2. 将权限类型数据序列化并返回
         serializer = ContentTypeSerializer(content_types, many=True)
         return Response(serializer.data)
+
+
+class GroupViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
+
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+    # GET /meiduo_admin/permission/groups/ -> list
+    # POST /meiduo_admin/permission/groups/ -> create
+    # GET /meiduo_admin/permission/groups/(?P<pk>\d+)/ -> retrieve
+    # PUT /meiduo_admin/permission/groups/(?P<pk>\d+)/ -> update
+    # DELETE /meiduo_admin/permission/groups/(?P<pk>\d+)/ -> destroy
+    # GET /meiduo_admin/permission/simple/ -> simple
+
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.get_queryset()
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save() # 调用序列化器类中的create
+    #     return Response(serializer.data, status=201)
+
+    def simple(self, request):
+        """
+        获取权限的简单数据
+        """
+        perms = Permission.objects.all()
+        serializer = PermSimpleSerializer(perms, many=True)
+        return Response(serializer.data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
