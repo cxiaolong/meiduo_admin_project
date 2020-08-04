@@ -1,3 +1,4 @@
+from datetime import date
 from django.urls import path
 from django.urls import re_path
 from meiduo_admin.views import skus
@@ -8,6 +9,8 @@ from meiduo_admin.views import permissions
 urlpatterns = [
     # 进行url配置
     path('authorizations/', users.AdminAuthView.as_view()),
+    path('statistical/total_count/', statistical.UserTotalCountView.as_view()),
+    path('statistical/day_increment/', statistical.UserDayCountView.as_View()),
     path('statistical/day_active/', statistical.UserDayActiveView.as_view()),
     path('statistical/day_orders/', statistical.UserDayOrdersView.as_view()),
     path('statistical/month_increment/', statistical.UserMonthCountView.as_view()),

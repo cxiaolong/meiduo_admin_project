@@ -95,6 +95,8 @@ class AdminViewSet(ModelViewSet):
 
     queryset = User.objects.filter(is_staff=True)
     serializer_class = AdminSerializer
+
+    lookup_value_regex = '\d+'
     # GET /meiduo_admin/permission/admins/ -> list
 
     # def list(self, request, *args, **kwargs):

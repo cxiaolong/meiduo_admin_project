@@ -1,8 +1,39 @@
+from datetime import date
 from users.models import User
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
+
+
+# GET /meiduo_admin/statistical/day_increment/
+class UserDayCountView(APIView):
+    """日增用户统计"""
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        now_date = date.today()
+        count = User.objects.filter(date_joined__gte=now_date).count()
+
+        return Response({
+            'count': count,
+            'date': now_date
+        })
+
+
+# GET /meiduo_admin/statistical/total_count/
+class UserTotalCountView(APIView):
+    """用户总数统计"""
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        now_date = date.today()
+        count = User.objects.all().count()
+
+        return Response({
+            'count': count,
+            'date': now_date
+        })
 
 
 # GET /meiduo_admin/statistical/day_active/
